@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Prediction</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input { margin: 5px; padding: 8px; width: 200px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        #result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #333;
+            display: none;
+            width: fit-content;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter House Features</h2>
+    <input type="number" id="input1" placeholder="Size of house"><br>
+    <input type="number" id="input2" placeholder="Bed rooms "><br>
+    <input type="number" id="input3" placeholder="Location index"><br>
+    <input type="number" id="input4" placeholder="Age of house"><br>
+    <button onclick="getPrediction()">Predict</button>
+
+    <div id="result-box"></div>
+
+    <script>
+        async function getPrediction() {
+            let input1 = document.getElementById("input1").value;
+            let input2 = document.getElementById("input2").value;
+            let input3 = document.getElementById("input3").value;
+            let input4 = document.getElementById("input4").value;
+
+            let response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ input1, input2, input3, input4 })
+            });
+
+            let data = await response.json();
+            let resultBox = document.getElementById("result-box");
+            resultBox.innerHTML = "Prediction: " + data.prediction;
+            resultBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>
